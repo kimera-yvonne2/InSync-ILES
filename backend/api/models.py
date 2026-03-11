@@ -15,5 +15,8 @@ class students(models.Model):
      phone=models.CharFieldField(max_length=13)
      department=models.Charfield(max_length=50)
      office_location=models.CharField(max_length=100)
+     specialization= models.CharField()
+    
+
 
 # Create your models here.
