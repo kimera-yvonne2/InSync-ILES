@@ -16,6 +16,13 @@ class students(models.Model):
      department=models.Charfield(max_length=50)
      office_location=models.CharField(max_length=100)
      specialization= models.CharField()
+
+     class workplace_supervisor(models.Model):
+      name=models.CharField(max_length=100)
+      email=models.EmailField() 
+      phone=models.CharField(max_length=14)
+      position=models.CharField(max_length=100)
+     
      
     
 
