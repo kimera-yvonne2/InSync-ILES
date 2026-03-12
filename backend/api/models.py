@@ -16,6 +16,7 @@ class students(models.Model):
      department=models.Charfield(max_length=50)
      office_location=models.CharField(max_length=100)
      specialization= models.CharField()
+     
     
 
 
