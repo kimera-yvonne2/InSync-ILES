@@ -87,7 +87,6 @@ class internshipreport_model(models.Model):
         ('REJECTED','rejeceted')
     ]
     status=models.CharField(max_length=12, choices=status_choices, default='PENDING')
-    
        
      
 class  WeeklyLog(models.Model):
