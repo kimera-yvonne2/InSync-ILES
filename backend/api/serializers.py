@@ -7,3 +7,7 @@ class students_serializer(serializers.ModelSerlializer):
         fields='__all__'
 
 
+class academic_supervisor(serializers.ModelSerializer):
+    class Meta:
+        model=academic_supervisor
+        fields='__all__'
