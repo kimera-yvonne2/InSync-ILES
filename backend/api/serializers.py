@@ -22,3 +22,7 @@ class administrator (serializers.ModelSerializer):
     class Meta:
         model=administrator
         field='__all__'
+
+class weeklylog(serializers.ModelSerializers):
+    class Meta:
+        field='__all__'
