@@ -16,3 +16,9 @@ class workplace_supervisor(serializers.ModelSerializer):
     class Meta:
         model= workplace_supervisor
         fields='__all__'
+
+
+class administrator (serializers.ModelSerializer):
+    class Meta:
+        model=administrator
+        field='__all__'
