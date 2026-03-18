@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURLs = [
-  "http://127.0.0.1:8000", // Local
+  //"http://127.0.0.1:8000", // Local
   "https://kimera.tagooledavid.com" // Online
 ];
 
