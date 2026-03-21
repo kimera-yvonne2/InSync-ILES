@@ -1,6 +1,7 @@
 // src/App.jsx
 import { useState } from "react";
-
+//before editing the code please tell where u have exactly
+//verey important 
 function App() {
   const [hover, setHover] = useState(false);
 
@@ -119,8 +120,7 @@ function App() {
         <p>&copy; 2026 ILES System. All rights reserved.</p>
       </footer>
     </>
->>>>>>> 7f5420a7bb6885dc5a960b899d109ea8eb86b954
+
   );
 }
-
 export default App;
