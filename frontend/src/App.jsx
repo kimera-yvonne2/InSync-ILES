@@ -5,11 +5,7 @@ function App() {
   const [hover, setHover] = useState(false);
 
   return (
-<<<<<<< HEAD
-    <div className="App">
-      <h1>{ message }</h1>
-    </div>
-=======
+
     <>
       {/* HEADER */}
       <header
