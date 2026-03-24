@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import (
-    students,
+    Students,
     academic_supervisor,
     workplace_supervisor,
     administrator,
@@ -13,7 +13,7 @@ from .models import (
 
 class StudentsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = students
+        model = Students
         fields = '__all__' 
 
 class AcademicSupervisorSerializer(serializers.ModelSerializer):
