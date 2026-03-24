@@ -58,7 +58,7 @@ function App() {
             transition: "all 0.3s ease"
           }}
         >
-          Get Started
+          Get Started now
         </button>
       </section>
 
