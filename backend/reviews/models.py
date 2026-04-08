@@ -25,7 +25,6 @@ class review(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     
 
-
 def __string__(self):
     return f"{self.student} -week{self.Week}"
 
