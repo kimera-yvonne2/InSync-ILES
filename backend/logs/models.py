@@ -11,7 +11,8 @@ class Weeklylog(models.Model):
     )   
     Week_number=models.PositiveIntegerField()
     objectives=models.TextField()
-
+    
+#this make a log for a student one per week
 class Meta:
     unique_together=("student","Week_number")     
     ordering=["-Week-number"]  
