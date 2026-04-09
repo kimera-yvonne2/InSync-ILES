@@ -3,15 +3,18 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 
 class review(models.Model):
+
     Student=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                               related_name="reviews_recieved",
  limit_choices_to={"role":"Student"})
     
-    Academic_supervisor=models.ForeignKey(
+    workplace_supervisor=models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="reviews_received",
-        limit_choices_to=("role:Academic_supervisor")
+        limit_choices_to=("role:Workplace_Supervisor")
     )
 
     Placement=models.ForeignKey(
@@ -25,12 +28,12 @@ class review(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     
 
-def __string__(self):
+def __str__(self):
     return f"{self.student} -week{self.Week}"
 
 def clean(self):
-    if self.Academic_supervisor.role !="Academic_supervisor":
-        raise ValidationError('Only Academic_supervisor can give reviews')
+    if self.Workplace_Supervisor.role !="WORKPLACE_SUPERVISOR":
+        raise ValidationError('Only Workplace_Supervisor can give reviews')
     
 
     #reviwing onl students
