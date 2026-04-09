@@ -38,5 +38,4 @@ class WeeklyLog(models.Model):
         return f"Week {self.week_number} - {self.student.username}"      
 
                                     
-
 # Create your models here.
