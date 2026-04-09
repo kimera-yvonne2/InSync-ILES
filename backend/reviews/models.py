@@ -1,56 +1,40 @@
 from django.db import models
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-class review(models.Model):
-
-    Student=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                              related_name="reviews_recieved",
- limit_choices_to={"role":"Student"})
-    
-    workplace_supervisor=models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="reviews_received",
-        limit_choices_to=("role:Workplace_Supervisor")
+class SupervisorReview(models.Model):
+    # Link to the log being reviewed (Week 7: State transitions)
+    weekly_log = models.OneToOneField(
+        'logs.WeeklyLog', 
+        on_delete=models.CASCADE, 
+        related_name='review'
     )
-
-    Placement=models.ForeignKey(
-        "placements.internshipPlacement",
-        on_delete=models.CASCADE
+    
+    # The supervisor performing the review
+    supervisor = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name='given_reviews'
     )
-
-    week=models.PositiveIntegerField()
-    score=models.DecimalField(max_digits=5,decimal_places=2)
-    feedback=models.TextField()
-    created_at=models.DateTimeField(auto_now_add=True)
     
-
-def __str__(self):
-    return f"{self.student} -week{self.Week}"
-
-def clean(self):
-    if self.Workplace_Supervisor.role !="WORKPLACE_SUPERVISOR":
-        raise ValidationError('Only Workplace_Supervisor can give reviews')
+    # Week 7 Assignment: Store review comments
+    comments = models.TextField()
     
-
-    #reviwing onl students
-    if self.Student.role != "Student":
-        raise ValidationError("only students can be reviewed")
+    # Fields for Week 9: Weighted scoring formulas
+    # Example: score out of 100 for this specific week
+    technical_score = models.PositiveIntegerField(default=0)
+    professionalism_score = models.PositiveIntegerField(default=0)
     
+    date_reviewed = models.DateTimeField(auto_now_add=True)
 
-    #avoiding duplicates of weekly reviews
-    if review.objects.filter(
-        Student=self.Student,
-        week=self.Week,
-
-    ). exclude(pk=self.pk).exists():
-        raise ValidationError('review already exists for this week.')
-def save(self,*args,**kwargs):
-  self.full_clean()
-  super().save(*args,**kwargs) 
+    def __str__(self):
+        return f"Review for {self.weekly_log.student.username} - Week {self.weekly_log.week_number}"
     
-
+@receiver(post_save, sender=SupervisorReview)
+def update_log_status(sender, instance, created, **kwargs):
+    if created:
+        log = instance.weekly_log
+        log.status = 'REVIEWED'
+        log.save()    
 # Create your models here.
