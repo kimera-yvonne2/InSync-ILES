@@ -18,6 +18,7 @@ function Hero() {
         <p style={{ fontSize: "1.2rem", marginBottom: "30px" }}>
           Track, Evaluate, and Improve Intern Performance Seamlessly
         </p>
+
         <button
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
@@ -35,6 +36,7 @@ function Hero() {
         >
           Get Started now
         </button>
+        
       </section>
   );
 }
