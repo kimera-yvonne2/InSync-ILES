@@ -18,6 +18,7 @@ class SupervisorReview(models.Model):
         related_name='given_reviews'
     )
     
+    
     # Week 7 Assignment: Store review comments
     comments = models.TextField()
     
