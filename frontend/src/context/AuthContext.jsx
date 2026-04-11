@@ -21,7 +21,17 @@ export const AuthProvider = ({ children }) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
-        }); 
+        });
+        const data = await response.json();
+        
+        if (response.status === 200) {
+            setAuthTokens(data);
+            setUser(jwtDecode(data.access));
+            localStorage.setItem('authTokens', JSON.stringify(data));
+            navigate('/dashboard'); 
+        } else {
+            alert('Something went wrong! Check your credentials and try again.');
+        }
     };
 };
 
