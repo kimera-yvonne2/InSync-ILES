@@ -24,10 +24,12 @@ const Menubar = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex">
+                        
                         {/* Logo or Brand Name */}
                         <div className="flex-shrink-0 flex items-center">
                             <span className="text-xl font-bold text-indigo-800">InSync-ILES</span>
                         </div>
+                        
                         {/* DesktopNavigation */}
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                             {navigation.map((item) => (
@@ -46,6 +48,7 @@ const Menubar = () => {
                             ))}
                         </div>
                     </div>
+                    
                     {/* Right side icons */}
                     <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
                         <button className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
@@ -56,6 +59,7 @@ const Menubar = () => {
                             Logout
                         </button>
                     </div>
+                    
                     {/* Mobile menu button */}
                     <div className="flex items-center sm:hidden">
                         <button
@@ -68,6 +72,7 @@ const Menubar = () => {
                 </div>
             </div>
 
+            
             {/* Mobile Menu Content */}
             {isOpen && (
                 <div className="sm:hidden bg-white border-t border-gray-200">
