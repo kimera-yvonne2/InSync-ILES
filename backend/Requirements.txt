@@ -1,9 +1,0 @@
-asgiref
-Django
-django-cors-headers
-djangorestframework-simplejwt
-PyJWT
-pytz
-sqlparse
-psycopg2-binary
-python-dontev
