@@ -23,7 +23,8 @@ const useFetch = (url) => {
       fetchData();
     }
   }, [url]);  //Added dependency array to re-fetch data when URL changes
-
+  
+  // Return these so components using this hook can access the data, loading state, and any errors
   return { data, loading, error };
 };
 
