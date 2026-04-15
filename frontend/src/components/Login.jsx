@@ -49,7 +49,7 @@ const styles = {
     card: { backgroundColor: '#fff', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', width: '300px', textAlign: 'center' },
     form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
     input: { padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', fontSize: '16px' },
-    button: { padding: '0.5rem', borderRadius: '4px', border: 'none', backgroundColor: '#007bff', color: '#fff', fontSize: '16px', cursor: 'pointer' },
+    button: { padding: '0.5rem', borderRadius: '4px', border: 'none', backgroundColor: '#007bff', color: 'white', fontSize: '16px', cursor: 'pointer' },
 };
 
 export default Login;
