@@ -23,7 +23,7 @@ const LoginPage = () => {
           <h1 style={{color:'#1e3a8a', fontWeight: '900', fontsize:'2rem'}} 
           className= "uppercase tracking-light"
           >
-            INSYNC ILES
+            INSYNC-ILES
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             Internship Logging & Evaluation System
