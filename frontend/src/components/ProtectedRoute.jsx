@@ -5,6 +5,8 @@ const ProtectedRoute = () => {
     const { user, loading } = useAuth();
     const location = useLocation();
 
+    // Prevents the app from flickering or accidentally redirecting
+
     if (loading) {
         return (
             <div className="flex h-screen items-center justify-center">
@@ -13,10 +15,12 @@ const ProtectedRoute = () => {
         );
     }
 
+    //if no user is auhenticated, redirect to login page and save the current location they were trying to go to. This allows us to send them along once they login.
     if (!user) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
+    // If there is a user, allow them to see the protected route
     return <Outlet />;
 };
 
