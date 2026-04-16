@@ -15,6 +15,7 @@ const LoginPage = () => {
       <div className="w-full max-w-md bg-white rounded-xl border border-gray-100 shadow-sm p-8">
         
         {/* Header Section */}
+        
         <div className="flex flex-col items-center mb-8">
           <div className="bg-[#1e3a8a] p-3 rounded-xl mb-4 shadow-md">
             <GraduationCap size={32} className="text-white" />
@@ -30,6 +31,7 @@ const LoginPage = () => {
         </div>
 
         {/* Form Section */}
+        
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
