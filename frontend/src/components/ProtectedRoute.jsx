@@ -20,6 +20,7 @@ const ProtectedRoute = () => {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
+    // If there is a user, allow them to see the protected route
     return <Outlet />;
 };
 
