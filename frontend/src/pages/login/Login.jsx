@@ -67,9 +67,11 @@ const LoginPage = () => {
           >
             Sign In
           </button>
+        
         </form>
 
         {/* Footer Section */}
+        
         <div className="mt-8 text-center">
           
           <p className="text-sm text-gray-600">
