@@ -5,11 +5,25 @@ from .models import WeeklyLog
 from .serializers import WeeklyLogSerializer
 
 class WeeklyLogViewSet(viewsets.ModelViewSet):
-    queryset = WeeklyLog.objects.all()
     serializer_class = WeeklyLogSerializer
-    permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(student=self.request.user)
+    def get_queryset(self):
+        user = self.request.user
+        # RBAC: Students see their own logs; Supervisors see their assigned interns
+        if user.role == 'STUDENT':
+            return WeeklyLog.objects.filter(student=user)
+        if user.role == 'SUPERVISOR':
+            return WeeklyLog.objects.filter(placement__supervisor=user)
+        return WeeklyLog.objects.all()
+
+    def perform_update(self, serializer):
+        instance = self.get_object()
+        # Business Logic: Lock the log if it's already been Approved
+        if instance.status == 'APPROVED' and self.request.user.role == 'STUDENT':
+            raise ValidationError("You cannot edit a log once it has been approved.")
+        serializer.save()
+    
+
+
 
 # Create your views here.
