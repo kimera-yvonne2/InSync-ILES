@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Admindashboard = () => {
+    
     const [adminData, setAdminData] = useState(null);
 
     useEffect(() => {
@@ -21,6 +22,7 @@ const Admindashboard = () => {
         <div className='p-6'>
             <h1 className='text-2xl font-bold'>System Administrator Overview </h1>
 
+            
             {/* Display key metrics and analytics here */}
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4 my-6'>
                 <div className='bg-white shadow p-4 rounded-lg border-l-4 border-blue-500'>
