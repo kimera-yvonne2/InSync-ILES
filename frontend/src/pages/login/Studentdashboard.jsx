@@ -2,6 +2,8 @@ import { StatCard } from "@/components/StatCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import {BookOpen, Clock, CheckCircle2, FileText} from "lucide-react";
+import { RadialBar, RadialBarChart, ResponsiveContainer } from "recharts";
 
 const student = MOCK_STUDENTS[0];
 const studentLogs = MOCK_LOGS.filter(l => l.studentName === student.name);
@@ -125,4 +127,5 @@ export function StudentDashboard() {
       </Card>
     </div>
   );
+
 }
