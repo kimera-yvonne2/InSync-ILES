@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .models import WeeklyLog
 from .serializers import WeeklyLogSerializer
+from rest_framework.exceptions import ValidationError
 
 class WeeklyLogViewSet(viewsets.ModelViewSet):
     serializer_class = WeeklyLogSerializer
