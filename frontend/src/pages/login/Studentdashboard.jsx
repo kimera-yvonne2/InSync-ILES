@@ -21,6 +21,7 @@ function getLogStatusBadge(status) {
   return <Badge variant="outline" className={map[status]}>{status}</Badge>;
 }
 
+
 export function StudentDashboard() {
   return (
     <div className="space-y-6">
@@ -36,6 +37,7 @@ export function StudentDashboard() {
         <StatCard title="Grade" value={student.grade || "PENDING"} icon={CheckCircle2} variant="default" />
       </div>
 
+      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="border-border">
           <CardHeader className="pb-2">
@@ -52,6 +54,7 @@ export function StudentDashboard() {
           </CardContent>
         </Card>
 
+        
         <Card className="lg:col-span-2 border-border">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold">Score Breakdown</CardTitle>
@@ -74,6 +77,7 @@ export function StudentDashboard() {
         </Card>
       </div>
 
+      
       <Card className="border-border">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-semibold">My Weekly Logs</CardTitle>
@@ -103,19 +107,23 @@ export function StudentDashboard() {
         </CardContent>
       </Card>
 
+      
       <Card className="border-border">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-semibold">Placement Details</CardTitle>
+        
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 text-sm">
             {[
+              
               ["User", student.username],
               ["internship", student.internship],
               ["week_start", student.week_start],
               ["week_number", student.week_number],
               ["Content", student.content],
               ["submitted_at", student.submitted_at],
+            
             ].map(([label, value]) => (
               <div key={label}>
                 <p className="text-muted-foreground text-xs">{label}</p>
