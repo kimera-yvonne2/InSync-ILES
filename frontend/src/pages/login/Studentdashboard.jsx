@@ -111,6 +111,7 @@ export function StudentDashboard() {
       <Card className="border-border">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-semibold">Placement Details</CardTitle>
+        
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 text-sm">
