@@ -74,6 +74,7 @@ export function StudentDashboard() {
         </Card>
       </div>
 
+      
       <Card className="border-border">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-semibold">My Weekly Logs</CardTitle>
@@ -103,6 +104,7 @@ export function StudentDashboard() {
         </CardContent>
       </Card>
 
+      
       <Card className="border-border">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-semibold">Placement Details</CardTitle>
