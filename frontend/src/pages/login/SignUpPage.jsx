@@ -76,6 +76,7 @@ const SignUpPage = () => {
                         <UserPlus className=" w-5 h-5 " />
                         Sign Up
                     </button>
+                
                 </form>
                 <p className="text-center text-zinc-500 mt-8 text-sm">
                     Already have an account? <Link to="/login" className="text-indigo-400 hover:text-indigo-400 font-medium hover:underline">Log In</Link>
