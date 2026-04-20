@@ -20,7 +20,7 @@ function Navbar() {
       }}
     >
       <h1 style={{ fontSize: "1.5rem", fontWeight: "700", margin: 0, background: "linear-gradient(to right, #60a5fa, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-        InSync ILES
+        InSync ILES 
       </h1>
             <nav style={{ display: "flex", gap: "25px" }}>
         <Link to="/" style={{ color: "#e5e7eb", textDecoration: "none", fontWeight: "500", transition: "color 0.3s" }}>Home</Link>
