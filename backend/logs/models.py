@@ -34,7 +34,8 @@ class WeeklyLog(models.Model):
         unique_together = ['student', 'week_number']
 
     def __str__(self):
-        return f"Week {self.week_number} - {self.student.username}"      
+        return f"Week {self.week_number} - {self.student.username}" 
+         
 
                                     
 # Create your models here.
