@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { GraduationCap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -77,9 +78,9 @@ const LoginPage = () => {
           
           <p className="text-sm text-gray-600">
             Don't have an account?{' '}
-            <a href="#" className="text-[#1e3a8a] font-semibold hover:underline">
+            <Link to="/signup" className="text-[#1e3a8a] font-semibold hover:underline">
               Sign Up
-            </a>
+            </Link>
           </p>
         
         </div>

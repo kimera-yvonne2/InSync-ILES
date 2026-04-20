@@ -1,54 +1,26 @@
-import { useState } from "react";
 import Navbar from "./Navbar";
-import Hero from "./Hero";
-import Features from "./Features";
 import Footer from "./Footer";
-import Dashboard from "./Dashboard";
+import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/login/Login";
+import SignUpPage from "./pages/login/SignUpPage";
+import { StudentDashboard } from "./pages/login/Studentdashboard";
+import { AdminDashboard } from "./pages/login/Admindashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [showDashboard, setShowDashboard] = useState(false);
-  const [currentUser, setCurrentUser] = useState({
-    id: 1,
-    name: "KAHUMA WALID"
-  });
-  const [logs, setLogs] = useState([]);
   return (
-    
     <BrowserRouter>
       <Navbar />
-
-      {showDashboard ? (
-        // <Dashboard 
-        // goHome={() => setShowDashboard(false)}
-        // currentUser={currentUser}
-        // logs={logs}
-        // setLogs={setLogs}
-        //  />
-        
-        <LoginPage/>
-
-      ) : (
-        <>
-          <Hero goToDashboard={() => setShowDashboard(true)} />
-          <Features />
-        </>
-      )}
-        <Routes>
-          {/* <Route path="/" element={<Hero goToDashboard={() => setShowDashboard(true)} />} />
-          <Route path="/dashboard" element={<Dashboard 
-        goHome={() => setShowDashboard(false)}
-        currentUser={currentUser}
-        logs={logs}
-        setLogs={setLogs}
-         />} /> */}
-          {/* <Route path="/login" element={<LoginPage />} /> */}
-        </Routes>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/student-dashboard" element={<StudentDashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      </Routes>
       <Footer />
-    </BrowserRouter>  
-    
+    </BrowserRouter>
   );
 }
 
-export default App;
+export default App;
