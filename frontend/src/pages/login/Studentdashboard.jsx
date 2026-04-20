@@ -35,6 +35,7 @@ export function StudentDashboard() {
 
   return (
     <div className="space-y-6">
+      
       {/* Dynamic Header */}
       <div>
         <h1 className="text-2xl font-bold text-foreground">My Internship</h1>
@@ -109,7 +110,7 @@ export function StudentDashboard() {
         </Card>
       </div>
 
-      {/* Logs List - Generated from fetched array */}
+      {/* Logs List  */}
       <Card>
         <CardHeader><CardTitle className="text-base font-semibold">Weekly Activity</CardTitle></CardHeader>
         <CardContent>
