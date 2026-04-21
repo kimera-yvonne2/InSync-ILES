@@ -7,6 +7,7 @@ import { StudentDashboard } from "./pages/login/Studentdashboard";
 import { AdminDashboard } from "./pages/login/Admindashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+
 function App() {
   return (
     
