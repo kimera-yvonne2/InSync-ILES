@@ -9,3 +9,4 @@ class SupervisorOrStudent(permissions.BasePermission):
        if request.method=="POST":
            return request.user.role=="STUDENT"
        return True
+    
