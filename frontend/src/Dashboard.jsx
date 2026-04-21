@@ -3,7 +3,8 @@ import LogList from "./LogList";
 import { useState } from "react";
 
 
-function Dashboard({ goHome, currentUser, logs, setLogs }) {
+function Dashboard({ goHome,
+   currentUser, logs, setLogs }) {
   
   const userLogs = logs.filter(
     (log) => log.userId === currentUser.id
