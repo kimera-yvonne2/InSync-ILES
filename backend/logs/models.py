@@ -17,10 +17,23 @@ class WeeklyLog(models.Model):
     start_date = models.DateField() 
     end_date =models.DateField()
     
-
     activities_performed = models.TextField(blank =True , null = True)
     lessons_learned = models.TextField(blank =True ,null= True)
     challenges_faced = models.TextField(blank =True, null =True)
+    Academic_supervisor=models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL, 
+        null=True,
+        related_name="academic_logs"
+
+    )
+    placement_supervisor=models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="placement_logs"
+
+    )
 
     status = models.CharField(
         max_length =20,
@@ -35,7 +48,8 @@ class WeeklyLog(models.Model):
         unique_together = ['student', 'week_number']
 
     def __str__(self):
-        return f"Week {self.week_number} - {self.student.username}"      
+        return f"Week {self.week_number} - {self.student.username}" 
+         
 
                                     
 # Create your models here.

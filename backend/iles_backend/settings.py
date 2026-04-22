@@ -38,14 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'reviews',
     'logs',
     'placements',
     'users',
+    'evaluations',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -78,10 +81,15 @@ WSGI_APPLICATION = 'iles_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# Replace the old DATABASES = { ... } with this:
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'iles_db',          # The name of the database you create in Postgres
+        'USER': 'postgres',         # Your Postgres username
+        'PASSWORD': 'iles_project26',  # Your Postgres password
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -123,3 +131,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL ='users.CustomUser'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173", 
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+#this ensures that every request must have a valid token
+REST_FRAMEWORK={
+    "DEFAULT_AUTHENTICATION_CLASSES":(
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
