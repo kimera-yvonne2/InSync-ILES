@@ -5,6 +5,9 @@ from .serializers import UserSerializer # You'll need to create this serializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import MyTOkenObtainPairSerializer
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -40,6 +43,8 @@ class UserViewSet(viewsets.ModelViewSet):
         if not user.is_active:
             return Response({"message":f"User{user.name} has been deactivated."}), status.HTTP_200_OK
         
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class=MyTOkenObtainPairSerializer   
          
 
          
