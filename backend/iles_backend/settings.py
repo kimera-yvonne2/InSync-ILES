@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'logs',
     'placements',
     'users',
-    'evaluations',
+    'evaluations','django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +156,4 @@ SIMPLE_JWT={
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
+EMAIL_BACKEND= 'django.core,email.backends.console.EmailBackend'
