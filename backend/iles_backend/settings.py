@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'logs',
     'placements',
     'users',
-    'evaluations','django_rest_passwordreset',
+    'evaluations',
 ]
 
 MIDDLEWARE = [
