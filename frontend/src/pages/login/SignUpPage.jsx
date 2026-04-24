@@ -9,6 +9,7 @@ const SignUpPage = () => {
         password: '',
         role:'',
     });
+    
     const navigate = useNavigate();
 
     const handleSignUp = (e) => {
