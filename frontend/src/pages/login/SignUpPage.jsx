@@ -9,6 +9,7 @@ const SignUpPage = () => {
         password: '',
         role:'',
     });
+    
     const navigate = useNavigate();
 
     const handleSignUp = (e) => {
@@ -175,5 +176,4 @@ const SignUpPage = () => {
         </div>
     );
 };
-
 export default SignUpPage;
