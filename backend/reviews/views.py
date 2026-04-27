@@ -9,6 +9,7 @@ class WeeklyReviewViewSet(viewsets.ModelViewSet):
     queryset = SupervisorReview.objects.all()
     serializer_class = SupervisorReviewSerializer
     permission_classes = [IsAuthenticated]
+    
 
     def perform_create(self, serializer):
         # Automatically set the supervisor to the logged-in user
@@ -18,4 +19,5 @@ class WeeklyReviewViewSet(viewsets.ModelViewSet):
         log = review.log
         log.status = 'APPROVED'
         log.save()
+        
 # Create your views here.

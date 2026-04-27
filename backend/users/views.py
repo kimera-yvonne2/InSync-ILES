@@ -5,6 +5,10 @@ from .serializers import UserSerializer # You'll need to create this serializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import MyTOkenObtainPairSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -27,10 +31,10 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
          # Business Logic: Anyone can register, but only Admin can delete users.
         if self.action == 'create':
-            return [permissions.AllowAny()]
+            return [AllowAny()]
         if self.action == 'destroy':
             return [permissions.IsAdminUser()]
-        return [permissions.IsAuthenticated()]
+        return [IsAuthenticated()]
     
 #now also instead of deleting a record it can be activate so to keep the history of such a record
     @action(detail=True, methods=["post"],permission_classes=[permissions.IsAdminUser])
@@ -40,6 +44,8 @@ class UserViewSet(viewsets.ModelViewSet):
         if not user.is_active:
             return Response({"message":f"User{user.name} has been deactivated."}), status.HTTP_200_OK
         
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class=MyTOkenObtainPairSerializer   
          
 
          

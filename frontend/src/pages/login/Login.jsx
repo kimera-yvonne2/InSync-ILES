@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import { GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import api from '../../api';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log('Logging in with:', { email, password });
+
+    try {
+      const response = await api.post('/login', { email, password });
+      console.log('Server response:', response.data);
+      alert('Login successful!');
+    } catch (error) {
+      console.error('Login failed:', error.response?.data || error.message);
+      alert('Login failed. Please check your credentials.');
+    }
   };
 
   return (
@@ -40,7 +49,7 @@ const LoginPage = () => {
             </label>
             <input
               type="email"
-              placeholder="you@cit.ac.ug"
+              placeholder="name@cit.ac.ug"
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 text-black"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -63,6 +72,7 @@ const LoginPage = () => {
           </div>
 
           {/* Submit Button */} 
+          
           <button
             type="submit"
             className="w-full bg-[#1e3a8a] hover:bg-[#172e6d] text-white font-semibold py-3 rounded-lg transition-colors shadow-sm active:transform active:scale-[0.98]"
@@ -88,5 +98,4 @@ const LoginPage = () => {
     </div>
   );
 };
-
 export default LoginPage;
