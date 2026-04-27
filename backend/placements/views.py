@@ -10,5 +10,6 @@ class InternshipPlacementViewSet(viewsets.ModelViewSet):
     queryset = InternshipPlacement.objects.all()
     serializer_class = InternshipPlacementSerializer
     permission_classes = [IsAuthenticated]
+    
 
 # Create your views here.
