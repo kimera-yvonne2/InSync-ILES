@@ -51,7 +51,7 @@ function App() {
 
           {/* Public Preview (Temporary) */}
           <Route element={<Outlet />}>
-            
+
             {/* Student Portal */}
             <Route path="/student" element={<DashboardShell role="STUDENT" />}>
               <Route index element={<StudentDashboard />} />
@@ -94,10 +94,11 @@ function App() {
             <Route path="/admin-dashboard" element={<Navigate to="/admin" replace />} />
             <Route path="/workplace-dashboard" element={<Navigate to="/workplace" replace />} />
             <Route path="/academic-dashboard" element={<Navigate to="/academic" replace />} />
-            
+
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>
