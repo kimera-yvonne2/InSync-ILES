@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-yyo45o@2lk7@32q(n$3@l&w3+irpit-91rbu_((x6ped9%623+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['yvonne.tagooledavid.com','localhost','127.0.0.1','insync-iles.pages.dev']
 
 
 # Application definition
@@ -77,7 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'iles_backend.wsgi.application'
 
-
+#DATABASE_URL = "postgresql://neondb_owner:npg_yGsM0mT9QDJa@ep-ancient-truth-an9mceki-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -141,8 +142,19 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 #this ensures that every request must have a valid token
+from datetime import timedelta
 REST_FRAMEWORK={
     "DEFAULT_AUTHENTICATION_CLASSES":(
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
+
+SIMPLE_JWT={
+    "ACCESS_TOKEN_LIFETIME":timedelta(minutes=60), #how log the "key" works
+    "REFRESH_TOKEN_LIFETIME":timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS":True,
+    "BLACKLIST_AFTER_ROTATION":True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+EMAIL_BACKEND= 'django.core,email.backends.console.EmailBackend'

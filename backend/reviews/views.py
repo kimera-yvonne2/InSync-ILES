@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import SupervisorReview
 from .serializers import SupervisorReviewSerializer
 
+
 class WeeklyReviewViewSet(viewsets.ModelViewSet):
     queryset = SupervisorReview.objects.all()
     serializer_class = SupervisorReviewSerializer
@@ -18,4 +19,5 @@ class WeeklyReviewViewSet(viewsets.ModelViewSet):
         log = review.log
         log.status = 'APPROVED'
         log.save()
+        
 # Create your views here.
