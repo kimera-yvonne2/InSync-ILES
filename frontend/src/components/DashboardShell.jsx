@@ -64,12 +64,18 @@ const roleLinks = {
   ],
 };
 
-
 const roleHooks = {
   STUDENT: useStudentDashboard,
   ADMIN: useAdminStats,
   WORK_SUPERVISOR: useWorkplaceDashboard,
   ACADEMIC_SUPERVISOR: useAcaDashboard,
+};
+
+const ROLE_LABELS = {
+  STUDENT: 'Student',
+  ADMIN: 'Administrator',
+  WORK_SUPERVISOR: 'Workplace Supervisor',
+  ACADEMIC_SUPERVISOR: 'Academic Supervisor',
 };
 
 export default function DashboardShell({ role }) {
@@ -78,20 +84,25 @@ export default function DashboardShell({ role }) {
   const links = roleLinks[role] || [];
   const navigate = useNavigate();
 
-  // Fetch data based on role
   const { data, loading, error } = (roleHooks[role] || (() => ({ data: null, loading: false })))();
 
   const handleLogout = () => {
     logoutUser();
-    navigate('/login');
+    navigate('/');
   };
+
+  // FIX: JWT payload has first_name/last_name, not name
+  const displayName = user
+    ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email
+    : 'User';
+  const initials = displayName.charAt(0).toUpperCase();
 
   const contextValue = {
     data,
-    setData: () => { }, // Placeholder
-    studentId: user?.id || 1,
+    setData: () => {},
+    studentId: user?.user_id || user?.id,
     loading,
-    error
+    error,
   };
 
   return (
@@ -115,35 +126,32 @@ export default function DashboardShell({ role }) {
             <h1 className="text-xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
               InSync ILES
             </h1>
+            {/* Role badge */}
+            <span className="mt-1 inline-block text-xs text-slate-500 uppercase tracking-wider">
+              {ROLE_LABELS[role] || role}
+            </span>
           </div>
 
           <nav className="flex-1 space-y-2 overflow-y-auto">
             <div className="px-4 mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Current Portal
+              Navigation
             </div>
             {links.map((link) => (
               <SidebarLink key={link.to} to={link.to} icon={link.icon} end={link.end}>
                 {link.label}
               </SidebarLink>
             ))}
-
-            <div className="mt-8 mb-2 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Other Portals
-            </div>
-            {role !== 'STUDENT' && <SidebarLink to="/student" icon={Users} end={false}>Student Portal</SidebarLink>}
-            {role !== 'ADMIN' && <SidebarLink to="/admin" icon={Building2} end={false}>Admin Portal</SidebarLink>}
-            {role !== 'WORK_SUPERVISOR' && <SidebarLink to="/workplace" icon={ClipboardCheck} end={false}>Workplace Portal</SidebarLink>}
-            {role !== 'ACADEMIC_SUPERVISOR' && <SidebarLink to="/academic" icon={FileText} end={false}>Academic Portal</SidebarLink>}
+            {/* FIX: removed "Other Portals" cross-role links — RBAC enforced at route level */}
           </nav>
 
           <div className="mt-auto pt-6 border-t border-slate-800">
             <div className="flex items-center gap-3 px-4 mb-6">
               <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 font-bold">
-                {user?.name?.charAt(0) || 'U'}
+                {initials}
               </div>
               <div className="overflow-hidden">
-                <p className="text-sm font-medium text-white truncate">{user?.name || 'User'}</p>
-                <p className="text-xs text-slate-500 truncate">{user?.email || role?.toLowerCase() || 'portal'}</p>
+                <p className="text-sm font-medium text-white truncate">{displayName}</p>
+                <p className="text-xs text-slate-500 truncate">{user?.email || ''}</p>
               </div>
             </div>
             <button
