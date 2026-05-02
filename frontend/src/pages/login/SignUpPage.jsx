@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Mail, Lock, User, UserPlus, ShieldCheck, Sparkles } from 'lucide-react';
+import { Mail, Lock, User, UserPlus, ShieldCheck, Sparkles, AlertCircle } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const SignUpPage = () => {
     const [formData, setFormData] = useState({
@@ -10,30 +11,24 @@ const SignUpPage = () => {
         password: '',
         role: '',
     });
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
+    const { registerUser } = useAuth();
     const navigate = useNavigate();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/users/users/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+        setErrors({});
+        setLoading(true);
+        // FIX: use centralized registerUser from AuthContext (which calls apiService)
+        const result = await registerUser(formData);
+        setLoading(false);
 
-            if (response.ok) {
-                navigate('/login');
-            } else {
-                const errorData = await response.json();
-                console.error('Registration failed:', errorData);
-                alert('Registration failed. Please check your details and try again.');
-            }
-        } catch (error) {
-            console.error('Error during registration:', error);
-            alert('Something went wrong. Please try again later.');
+        if (result.success) {
+            navigate('/login', { state: { registered: true } });
+        } else {
+            setErrors(result.errors || { detail: 'Registration failed.' });
         }
     };
 
@@ -102,6 +97,14 @@ const SignUpPage = () => {
                                     <p className="mt-2 text-sm text-slate-400">A polished start for students and supervisors.</p>
                                 </div>
 
+                                {/* Global error banner */}
+                                {(errors.detail || errors.non_field_errors) && (
+                                    <div className="mb-4 flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                                        <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                                        {errors.detail || errors.non_field_errors?.[0]}
+                                    </div>
+                                )}
+
                                 <form onSubmit={handleSignUp} className="space-y-5">
                                     <div className="flex gap-4">
                                         <div className="space-y-2 w-1/2">
@@ -117,21 +120,23 @@ const SignUpPage = () => {
                                                     required
                                                 />
                                             </div>
+                                            {errors.first_name && <p className="text-xs text-red-400 ml-1">{errors.first_name[0]}</p>}
                                         </div>
 
                                         <div className="space-y-2 w-1/2">
-                                            <label className="ml-1 text-sm font-medium text-slate-200">Second Name</label>
+                                            <label className="ml-1 text-sm font-medium text-slate-200">Last Name</label>
                                             <div className="relative group">
                                                 <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500 transition-colors group-focus-within:text-sky-300" />
                                                 <input
                                                     type="text"
-                                                    placeholder="Second name"
+                                                    placeholder="Last name"
                                                     className="w-full rounded-2xl border border-white/10 bg-white/5 py-3.5 pl-12 pr-4 text-white placeholder:text-slate-500 outline-none transition-all duration-200 focus:border-sky-400/60 focus:bg-white/10 focus:ring-4 focus:ring-sky-400/10"
                                                     value={formData.last_name}
                                                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
                                                     required
                                                 />
                                             </div>
+                                            {errors.last_name && <p className="text-xs text-red-400 ml-1">{errors.last_name[0]}</p>}
                                         </div>
                                     </div>
 
@@ -148,6 +153,7 @@ const SignUpPage = () => {
                                                 required
                                             />
                                         </div>
+                                        {errors.email && <p className="text-xs text-red-400 ml-1">{errors.email[0]}</p>}
                                     </div>
 
                                     <div className="space-y-2">
@@ -156,13 +162,14 @@ const SignUpPage = () => {
                                             <Lock className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500 transition-colors group-focus-within:text-sky-300" />
                                             <input
                                                 type="password"
-                                                placeholder="Create a strong password"
+                                                placeholder="Create a strong password (min 8 chars)"
                                                 className="w-full rounded-2xl border border-white/10 bg-white/5 py-3.5 pl-12 pr-4 text-white placeholder:text-slate-500 outline-none transition-all duration-200 focus:border-sky-400/60 focus:bg-white/10 focus:ring-4 focus:ring-sky-400/10"
                                                 value={formData.password}
                                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                                 required
                                             />
                                         </div>
+                                        {errors.password && <p className="text-xs text-red-400 ml-1">{errors.password[0]}</p>}
                                     </div>
 
                                     <div className="space-y-2">
@@ -170,29 +177,27 @@ const SignUpPage = () => {
                                         <div className="relative group">
                                             <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500 transition-colors group-focus-within:text-sky-300" />
                                             <select
-                                                className="w-full rounded-2xl border border-white/10 bg-white/5 py-3.5 pl-12 pr-4 text-white placeholder:text-slate-500 outline-none transition-all duration-200 focus:border-sky-400/60 focus:bg-white/10 focus:ring-4 focus:ring-sky-400/10"
+                                                className="w-full rounded-2xl border border-white/10 bg-slate-900 py-3.5 pl-12 pr-4 text-white outline-none transition-all duration-200 focus:border-sky-400/60 focus:ring-4 focus:ring-sky-400/10"
                                                 value={formData.role}
                                                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-
                                                 required
-                                                style={{ color: 'gray' }}
                                             >
                                                 <option value="">Select a role</option>
                                                 <option value="STUDENT">Student</option>
-                                                <option value="ADMIN">Admin</option>
                                                 <option value="WORK_SUPERVISOR">Workplace Supervisor</option>
-                                                <option value="ACADEMIC_SUPERVISOR">Academic Advisor</option>
-
+                                                <option value="ACADEMIC_SUPERVISOR">Academic Supervisor</option>
                                             </select>
                                         </div>
+                                        {errors.role && <p className="text-xs text-red-400 ml-1">{errors.role[0]}</p>}
                                     </div>
 
                                     <button
                                         type="submit"
-                                        className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-sky-500/20 transition-transform duration-200 hover:-translate-y-0.5 hover:from-sky-400 hover:to-indigo-400 focus:outline-none focus:ring-4 focus:ring-sky-400/20"
+                                        disabled={loading}
+                                        className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-sky-500/20 transition-transform duration-200 hover:-translate-y-0.5 hover:from-sky-400 hover:to-indigo-400 focus:outline-none focus:ring-4 focus:ring-sky-400/20 disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
                                         <UserPlus className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
-                                        Sign Up
+                                        {loading ? 'Creating account…' : 'Sign Up'}
                                     </button>
                                 </form>
 

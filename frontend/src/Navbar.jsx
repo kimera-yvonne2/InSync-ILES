@@ -1,22 +1,20 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
+// FIX: JWT encodes roles as UPPERCASE — was using lowercase which never matched
+const ROLE_ROUTES = {
+  STUDENT: "/student",
+  ADMIN: "/admin",
+  WORK_SUPERVISOR: "/workplace",
+  ACADEMIC_SUPERVISOR: "/academic",
+};
+
 function Navbar() {
   const { user, logoutUser } = useAuth();
 
   const getDashboardLink = () => {
     if (!user) return "/login";
-
-    switch (user.role) {
-      case "student":
-        return "/student/dashboard";
-      case "supervisor":
-        return "/supervisor/dashboard";
-      case "admin":
-        return "/admin/dashboard";
-      default:
-        return "/login";
-    }
+    return ROLE_ROUTES[user.role] || "/login";
   };
 
   return (

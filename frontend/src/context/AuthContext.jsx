@@ -1,79 +1,102 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { jwtDecode } from "jwt-decode";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { authAPI } from "../api/apiService";
 
 const AuthContext = createContext();
 
+// Role → dashboard route mapping (roles are UPPERCASE in the JWT)
+const ROLE_ROUTES = {
+  STUDENT: "/student",
+  ADMIN: "/admin",
+  WORK_SUPERVISOR: "/supervisor",
+  ACADEMIC_SUPERVISOR: "/academic",
+};
+
 export const AuthProvider = ({ children }) => {
-    const [authTokens, setAuthTokens] = useState(() =>
-        localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null
-    );
+  const navigate = useNavigate();
+  const [authTokens, setAuthTokens] = useState(() => {
+    const raw = localStorage.getItem("authTokens");
+    return raw ? JSON.parse(raw) : null;
+  });
+  const [user, setUser] = useState(() => {
+    const raw = localStorage.getItem("authTokens");
+    return raw ? jwtDecode(JSON.parse(raw).access) : null;
+  });
 
-    const [user, setUser] = useState(() =>
-        localStorage.getItem('authTokens') ? jwtDecode(JSON.parse(localStorage.getItem('authTokens')).access) : null
-    );
+  const loginUser = async (email, password) => {
+    try {
+      const { data } = await authAPI.login({ email, password });
+      const decoded = jwtDecode(data.access);
+      setAuthTokens(data);
+      setUser(decoded);
+      localStorage.setItem("authTokens", JSON.stringify(data));
+      // Navigate to correct portal based on role in JWT
+      const route = ROLE_ROUTES[decoded.role] || "/";
+      navigate(route);
+      return { success: true };
+    } catch (err) {
+      const message =
+        err.response?.data?.detail ||
+        err.response?.data?.non_field_errors?.[0] ||
+        "Login failed. Check your credentials.";
+      return { success: false, message };
+    }
+  };
 
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const logoutUser = async () => {
+    if (authTokens?.refresh) {
+      try {
+        await authAPI.logout(authTokens.refresh);
+      } catch (_) {
+        // Blacklist call failed - still clear local state
+      }
+    }
+    setAuthTokens(null);
+    setUser(null);
+    localStorage.removeItem("authTokens");
+    navigate("/");
+  };
 
-    const loginUser = async (email, password) => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/token/login/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+  const registerUser = async (userData) => {
+    try {
+      const { data } = await authAPI.register(userData);
+      return { success: true, data };
+    } catch (err) {
+      const errors = err.response?.data || { detail: "Registration failed." };
+      return { success: false, errors };
+    }
+  };
 
-            const data = await response.json();
+  // Auto-refresh token before expiry
+  useEffect(() => {
+    if (!authTokens) return;
+    const decoded = jwtDecode(authTokens.access);
+    const msUntilExpiry = decoded.exp * 1000 - Date.now() - 60_000;
+    if (msUntilExpiry <= 0) {
+      logoutUser();
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const { data } = await authAPI.login({ refresh: authTokens.refresh });
+        setAuthTokens(data);
+        setUser(jwtDecode(data.access));
+        localStorage.setItem("authTokens", JSON.stringify(data));
+      } catch {
+        logoutUser();
+      }
+    }, msUntilExpiry);
+    return () => clearTimeout(timer);
+  }, [authTokens]);
 
-            if (response.status === 200) {
-                setAuthTokens(data);
-                const decodedUser = jwtDecode(data.access);
-                setUser(decodedUser);
-                localStorage.setItem('authTokens', JSON.stringify(data));
-
-                // Navigate based on role
-                const role = decodedUser.role || 'STUDENT';
-                if (role === 'ADMIN') navigate('/admin-dashboard');
-                else if (role === 'STUDENT') navigate('/student-dashboard');
-                else if (role === 'WORK_SUPERVISOR') navigate('/workplace-dashboard');
-                else if (role === 'ACADEMIC_SUPERVISOR') navigate('/academic-dashboard');
-                else navigate('/dashboard');
-            } else {
-                alert('Invalid credentials!');
-            }
-        } catch (error) {
-            console.error("Login error:", error);
-            alert('Something went wrong during login.');
-        }
-    };
-
-    const logoutUser = () => {
-        setAuthTokens(null);
-        setUser(null);
-        localStorage.removeItem('authTokens');
-        navigate('/login');
-    };
-
-    const contextData = {
-        user,
-        authTokens,
-        setAuthTokens,
-        setUser,
-        loginUser,
-        logoutUser,
-        loading
-    };
-
-    useEffect(() => {
-        setLoading(false);
-    }, [authTokens]);
-
-    return (
-        <AuthContext.Provider value={contextData}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider
+      value={{ user, authTokens, loginUser, logoutUser, registerUser }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
