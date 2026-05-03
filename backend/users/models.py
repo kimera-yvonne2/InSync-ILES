@@ -20,39 +20,42 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser, PermissionsMixin):
-    STUDENT = "STUDENT"
-    WORK_SUPERVISOR = "WORK_SUPERVISOR"
+    STUDENT             = "STUDENT"
+    WORK_SUPERVISOR     = "WORK_SUPERVISOR"
     ACADEMIC_SUPERVISOR = "ACADEMIC_SUPERVISOR"
-    ADMIN = "ADMIN"
+    ADMIN               = "ADMIN"
 
     ROLE_CHOICES = (
-        (STUDENT, "Student"),
-        (WORK_SUPERVISOR, "Workplace Supervisor"),
+        (STUDENT,             "Student"),
+        (WORK_SUPERVISOR,     "Workplace Supervisor"),
         (ACADEMIC_SUPERVISOR, "Academic Supervisor"),
-        ("ADMIN", "Internship Administrator"),
+        (ADMIN,               "Internship Administrator"),
     )
+
+    # FIX: removes the inherited username field from AbstractUser
+    # Without this line, registration fails because username is required
+    # but the frontend never sends it
     username = None
 
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="STUDENT")
-    phone_number = models.CharField(max_length=15, blank=True)
-    email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=100, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
+    role          = models.CharField(max_length=20, choices=ROLE_CHOICES, default="STUDENT")
+    phone_number  = models.CharField(max_length=15, blank=True)
+    email         = models.EmailField(unique=True)
+    first_name    = models.CharField(max_length=100, blank=True)
+    last_name     = models.CharField(max_length=100, blank=True)
     student_number = models.BigIntegerField(null=True, blank=True)
-    intake_year = models.IntegerField(null=True, blank=True)
+    intake_year   = models.IntegerField(null=True, blank=True)
     year_of_study = models.IntegerField(null=True, blank=True)
-    programme_id = models.CharField(max_length=255, null=True, blank=True)
+    programme_id  = models.CharField(max_length=255, null=True, blank=True)
     programme_name = models.CharField(max_length=255, null=True, blank=True)
-    # department = models.CharField(max_length=255,null=True,blank=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    is_active     = models.BooleanField(default=True)
+    is_staff      = models.BooleanField(default=False)
+    is_superuser  = models.BooleanField(default=False)
+    created_at    = models.DateTimeField(auto_now_add=True)
+    updated_at    = models.DateTimeField(auto_now=True)
 
-    objects: "UserManager" = UserManager()
+    objects = UserManager()
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD  = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "role"]
 
     def __str__(self):
@@ -60,15 +63,10 @@ class CustomUser(AbstractUser, PermissionsMixin):
 
 
 class StaffProfile(models.Model):
-    user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-    )
-    staff_number = models.CharField(
-        max_length=255,
-    )
-    department = models.CharField(max_length=255, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    staff_number = models.CharField(max_length=255)
+    department   = models.CharField(max_length=255, null=True, blank=True)
+    created_at   = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.staff_number} ({self.user.email})"
@@ -76,20 +74,14 @@ class StaffProfile(models.Model):
 
 class SupervisorApplication(models.Model):
     STATUS_CHOICES = (
-        ("PENDING", "Pending"),
+        ("PENDING",  "Pending"),
         ("APPROVED", "Approved"),
         ("REJECTED", "Rejected"),
     )
-    user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-    )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
+    user       = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    status     = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.user.email} ({self.status})"
-
-
-# Create your models here.

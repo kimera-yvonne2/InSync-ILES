@@ -46,7 +46,6 @@ class WeeklyLog(models.Model):
 
     class Meta:
         unique_together = ['student', 'week_number']
-        
 
     def __str__(self):
         # FIX: was student.username but USERNAME_FIELD is email

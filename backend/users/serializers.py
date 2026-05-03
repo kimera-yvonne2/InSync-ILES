@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class UserSerializer(serializers.ModelSerializer):
     role_display = serializers.CharField(source='get_role_display', read_only=True)
     # password is write_only so it is never sent back to the client
-    password = serializers.CharField(write_only=True, min_length=8)
+    password = serializers.CharField(write_only=True, min_length=8, required=False)
     # FIX: tokens only included when creating (registering) a new user
     tokens = serializers.SerializerMethodField()
 
