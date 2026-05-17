@@ -3,6 +3,7 @@ from .models import SupervisorReview
 
 
 
+
 class SupervisorReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = SupervisorReview
