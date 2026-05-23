@@ -8,6 +8,7 @@ class WeeklyLog(models.Model):
         SUBMITTED = 'SUBMITTED', 'Submitted'
         REVIEWED = 'REVIEWED', 'Reviewed'
         APPROVED = 'APPROVED', 'Approved'
+        
 
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -40,6 +41,7 @@ class WeeklyLog(models.Model):
         choices=Status.choices,
         default=Status.DRAFT
     )
+
 
 
     created_at = models.DateTimeField(auto_now_add=True)
