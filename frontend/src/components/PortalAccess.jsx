@@ -98,7 +98,7 @@ export default function PortalAccess() {
   if (!myPortal) return null;
   const Icon = myPortal.icon;
 
-  
+  //allow portal access if user has any of the roles that match the portal config
   return (
     <section
       id="portal-access"
