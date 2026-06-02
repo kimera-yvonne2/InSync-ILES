@@ -35,6 +35,7 @@ const PORTAL_CONFIG = {
   },
 };
 
+
 // Public teasers — shown when NOT logged in (no links, just awareness)
 const ALL_PORTALS = Object.values(PORTAL_CONFIG);
 
@@ -98,7 +99,7 @@ export default function PortalAccess() {
   if (!myPortal) return null;
   const Icon = myPortal.icon;
 
-  
+  //allow portal access if user has any of the roles that match the portal config
   return (
     <section
       id="portal-access"
