@@ -131,17 +131,19 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
-
+import os 
+from dotenv import load_dotenv
+load_dotenv()
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # email notification system and settings
-EMAIL_BACKEND = "django.core.mail.backends.stmp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "alexmutsinzi2021@gmail.com"
-EMAIL_HOST_PASSWORD = "zvnodqmpgbsuzmev"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD =os.getenv("EMAIL_HOST_PASSWORD")
 
 CORS_ALLOWED_ORIGINS = [
     "https://insync-iles.pages.dev",
