@@ -4,7 +4,7 @@ export default function Notifications() {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
-  // Fetch notifications from the backend
+  // Fetch notifications from backend
   useEffect(() => {
     fetch("http://localhost:8000/api/notifications")
       .then((res) => res.json())
@@ -87,3 +87,4 @@ export default function Notifications() {
     </div>
   );
 }
+// Note: This component assumes the backend API endpoints for fetching and updating notifications are set up as described. Adjust the API URLs and data structure as needed to fit your backend implementation.
